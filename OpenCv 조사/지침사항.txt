@@ -1,0 +1,8 @@
+Opencv - 안드로이드 프로젝트 생성시 API 21이상일 것 
+Opencv - android sdk설치(openCv4.5.1 SDK 사용)
+https://opencv.org/releases/ 
+
+
+
+================참고 유투브 동영상 ==============
+https://www.youtube.com/watch?v=a3Y0uFLM7m0&t=65s  - JAVA 새 인식 하기
