@@ -26,7 +26,7 @@
 
 ---
 ## 시스템 설계
-![system_design](./Document/시스템설계.png)
+![system_design](./Document/210123시스템설계_목표버전.png)
 
 ---
 ## 서비스 WorkFlow
