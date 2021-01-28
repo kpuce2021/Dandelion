@@ -22,7 +22,8 @@
 
 1. [Github](https://github.com/kpuce2021/Dandelion)
 2. [Trello](https://trello.com/b/BMWAK0oT)
-3. Slack
+3. [SpreadSheet](https://docs.google.com/spreadsheets/d/1auyVjzKxb7iPgwjhEjFhaKm2PBqUoI8BcHxVw9EPz6k/edit?usp=sharing)
+4. Slack
 
 ---
 ## 시스템 설계
