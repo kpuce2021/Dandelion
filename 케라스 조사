@@ -1,0 +1,33 @@
+<케라스로 이미지 부풀리기>
+
+-ImageDataGenerator 함수를 사용 (from keras.preprocessing.image import ImageDataGenerator)
+
+-ImageDataGenerator 함수에 쓰이는 파라미터
+1. rotation_range = x 
+ : 지정된 각도 범위 내에서 임의로 원본이미지를 회전 (0~a의 각도 사이)
+
+2. width_shift_range = x 
+ : 지정된 수평방향 이동 범위내에서 임의로 원본이미지 이동 
+(전체 넓이=100이고 x=0.1이면, 10픽셀 내외로 좌우 이동)
+
+3. height_shift_range = x 
+ : 지정된 수직방향 이동 범위내에서 임의로 원본이미지를 이동
+(전체 높이= 100이고 x=0.1이면, 10픽셀 내외로 상하 이동)
+
+4. shear_range = x 
+ : 밀림 강도 범위내에서 임의로 원본이미지를 변형. 수치는 시계반대방향으로 밀림 강도를 라디안으로 나타냅니다. ( x= 0.5이면, 0.5 라디안내외로 시계반대방향으로 변형)
+
+5. zoom_range = x
+ : 지정된 확대/축소 범위내에서 임의로 원본이미지를 "1-x"부터 “1+x”사이 범위로 확대/축소
+( x=0.3이면 0.7배에서 1.3배 크기 변화)
+
+6. horizontal_flip = True 
+ : 수평방향으로 뒤집기를 합니다
+
+7. vertical_flip = True
+ : 수직방향으로 뒤집기를 합니다.
+
+참고자료
+https://jeongmin-lee.tistory.com/5?category=765520
+https://tykimos.github.io/2017/06/10/CNN_Data_Augmentation/
+https://www.youtube.com/watch?v=ccdssX4rIh8
