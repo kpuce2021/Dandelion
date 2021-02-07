@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "194713461637",
+    "project_id": "finditem-441c0",
+    "storage_bucket": "finditem-441c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194713461637:android:653f112c9da82454ed5aec",
+        "android_client_info": {
+          "package_name": "com.company.finditem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194713461637-8m0c35nkgoofae52d4kg9i6ngj389s67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSLZwWFvB4tmcnqkz_WsWwtaQy5UxLfPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194713461637-8m0c35nkgoofae52d4kg9i6ngj389s67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194713461637:android:8d60d096c79affb9ed5aec",
+        "android_client_info": {
+          "package_name": "kr.ac.kpu.itemfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194713461637-8m0c35nkgoofae52d4kg9i6ngj389s67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSLZwWFvB4tmcnqkz_WsWwtaQy5UxLfPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194713461637-8m0c35nkgoofae52d4kg9i6ngj389s67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

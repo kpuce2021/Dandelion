@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.nio.ByteBuffer
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var storage: FirebaseStorage
+    private lateinit var storageRef: StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        // Storage Field Initialize
+        storage = FirebaseStorage.getInstance()
+        // Create a storage reference from our app
+        storageRef = storage.reference
     }
 
     private fun takePhoto() {
@@ -53,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         // Create time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.US
+            SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA
             ).format(System.currentTimeMillis()) + ".jpg")
 
         // Create output options object which contains file + metadata
@@ -67,11 +76,27 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
+                // 성공한 경우 업로드 진행
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
+
+                    // [START upload_file]
+                    val serverRef = storageRef.child("images/${savedUri.lastPathSegment}")
+                    val uploadTask = serverRef.putFile(savedUri)
+
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnFailureListener {
+                        // Handle unsuccessful uploads
+                        Toast.makeText(baseContext, "Photo Upload Fail\n${it.message}", Toast.LENGTH_SHORT).show()
+                    }.addOnSuccessListener { taskSnapshot ->
+                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                        // ...
+                        Toast.makeText(baseContext, "Photo Upload Success", Toast.LENGTH_SHORT).show()
+                    }
+                    // [END upload_file]
                 }
             })
     }
@@ -133,7 +158,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "CameraXBasic"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
