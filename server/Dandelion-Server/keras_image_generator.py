@@ -16,7 +16,7 @@ data_datagen = ImageDataGenerator(rescale=1./255, rotation_range=30, shear_range
 
 filename_in_dir = []
 
-for root, dirs, files in os.walk('/home/starshan95/Dandelion/Dataset'):
+for root, dirs, files in os.walk('/home/starshan95/Dandelion/Dataset/Pepero_Original'):
     for fname in files:
         full_fname = os.path.join(root, fname)
         filename_in_dir.append(full_fname)
@@ -28,7 +28,7 @@ for file_image in filename_in_dir:
     x = x.reshape((1,) + x.shape)
 
     i = 0
-    for batch in data_datagen.flow(x, save_to_dir='/home/starshan95/Dandelion/Dataset_append', save_prefix='', save_format='jpg'):
+    for batch in data_datagen.flow(x, save_to_dir='/home/starshan95/Dandelion/Dataset_append', save_prefix='Pepero_Original', save_format='jpg'):
         i += 1
         if i > 3:
             break
