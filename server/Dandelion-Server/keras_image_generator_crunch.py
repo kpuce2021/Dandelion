@@ -9,16 +9,14 @@ from PIL import Image
 with tf.device('/gpu:0'):
     np.random.seed(3)
 
-
     data_datagen = ImageDataGenerator(rescale=1./255)
 
     data_datagen = ImageDataGenerator(rescale=1./255, rotation_range=30, shear_range=5.5,
                                       zoom_range=0., horizontal_flip=False, vertical_flip=False, fill_mode='nearest')
 
-
     filename_in_dir = []
 
-    for root, dirs, files in os.walk('/root/Dandelion/Dataset/Pepero_Original'):
+    for root, dirs, files in os.walk('/root/Dandelion/Dataset/Pepero_Crunch'):
         for fname in files:
             full_fname = os.path.join(root, fname)
             filename_in_dir.append(full_fname)
@@ -30,7 +28,7 @@ with tf.device('/gpu:0'):
         x = x.reshape((1,) + x.shape)
 
         i = 0
-        for batch in data_datagen.flow(x, save_to_dir='/root/Dandelion/Dataset_append', save_prefix='Pepero_Original', save_format='jpg'):
+        for batch in data_datagen.flow(x, save_to_dir='/root/Dandelion/Dataset_append/Pepero_Crunch', save_prefix='Pepero_Crunch', save_format='jpg'):
             i += 1
-            if i > 3:
+            if i > 5:
                 break
