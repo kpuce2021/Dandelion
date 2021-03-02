@@ -1,6 +1,13 @@
 import os
 
-for root, dirs, files in os.walk('/root/Dandelion/Dataset_append/Pepero_Amond'):
-    for fname in files:
-        full_fname = os.path.join(root, fname)
-        print(full_fname)
+path_dir = '/root/Dandelion/Dataset_append'
+dir_list = os.listdir(path_dir)
+
+for i in dir_list:
+    if '.ipynb_' in i:
+        dir_list.remove(i)
+
+for i in dir_list:
+    searchPath = path_dir + '/' + i
+    FileList = os.listdir(searchPath)
+    print("{} 이미지 개수 : {}".format(i, str(len(FileList))))
