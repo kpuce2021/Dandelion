@@ -10,6 +10,7 @@ num_classes = len(categories)
 
 # 앞에서 만든 데이터셋 불러오기
 X_train, X_test, Y_train, Y_test = np.load(
+<<<<<<< HEAD
     './imageDataList.npy', allow_pickle=True)
 
 model = Sequential()
@@ -24,6 +25,22 @@ model.add(Dropout(0.25))
 
 model.add(Convolution2D(64, 3, 3))
 model.add(MaxPooling2D(2))
+=======
+    './imageDataList_25.npy', allow_pickle=True)
+
+model = Sequential()
+model.add(Convolution2D(16, 3, 3, border_mode='same', activation='relu',
+                        input_shape=X_train.shape[1:]))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+
+model.add(Convolution2D(64, 3, 3,  activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+
+model.add(Convolution2D(64, 3, 3))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+>>>>>>> 3f4638c8c22eaf324c15daf5789bbc2670169fba
 model.add(Dropout(0.25))
 
 model.add(Flatten())
