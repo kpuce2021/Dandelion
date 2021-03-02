@@ -1,7 +1,4 @@
-from keras.models import Sequential
-from keras.layers import Dropout, Activation, Dense
-from keras.layers import Flatten, Convolution2D, MaxPooling2D
-from keras.models import load_model
+from tensorflow-gpu import keras
 import numpy as np
 import cv2
 
@@ -13,24 +10,24 @@ num_classes = len(categories)
 X_train, X_test, Y_train, Y_test = np.load(
     './imageDataList.npy', allow_pickle=True)
 
-model = Sequential()
-model.add(Convolution2D(16, 3, 3, border_mode='same', activation='relu',
-                        input_shape=X_train.shape[1:]))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model = keras.Sequential()
+model.add(keras.layers.Conv2D(16, kernel_size=3, padding='same', activation='relu',
+                              input_shape=X_train.shape[1:]))
+model.add(keras.layers.MaxPooling2D(2))
+model.add(keras.layers.Dropout(0.25))
 
-model.add(Convolution2D(64, 3, 3,  activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(keras.layers.Conv2D(64, kernel_size=3, activation='relu'))
+model.add(keras.layers.MaxPooling2D(2))
+model.add(keras.layers.Dropout(0.25))
 
-model.add(Convolution2D(64, 3, 3))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(keras.layers.Convolution2D(64, kernel_size=3))
+model.add(keras.layers.MaxPooling2D(2))
+model.add(keras.layers.Dropout(0.25))
 
-model.add(Flatten())
-model.add(Dense(256, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(256, activation='relu'))
+model.add(keras.layers.Dropout(0.5))
+model.add(keras.layers.Dense(num_classes, activation='softmax'))
 
 model.compile(loss='binary_crossentropy',
               optimizer='Adam', metrics=['accuracy'])
