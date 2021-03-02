@@ -29,12 +29,19 @@ model.add(keras.layers.Dense(256, activation='relu'))
 model.add(keras.layers.Dropout(0.5))
 model.add(keras.layers.Dense(num_classes, activation='softmax'))
 
-model.compile(loss='binary_crossentropy',
-              optimizer='Adam', metrics=['accuracy'])
+model.compile(loss='sparse_categorical_crossentropy',
+              optimizer='adam', metrics='accuracy')
+checkpoing_cb = keras.callbacks.ModelCheckpoint('best-cnn-model.h5')
+early_stopping_cb = keras.callbacks.EarlyStopping(
+    patience=2, restore_best_weights=True)
+history = model.fit(X_train, X_test, epochs=100,
+                    validation_data=(Y_train, Y_test), callbacks=[checkpoing_cb, early_stopping_cb])
+
+'''
 model.fit(X_train, Y_train, batch_size=32, nb_epoch=100)
 score = model.evaluate(X_test, Y_test)
 print('loss==>', score[0]*100)
 print('accuracy==>', score[1]*100)
-
+'''
 # 모델을 저장할 경로와 파일명을 지정한다.
 model.save('cnnModel_25.h5')
