@@ -1,0 +1,4 @@
+.ipynb_checkpoints
+pepero_almond
+pepero_crunky
+pepero_original

@@ -32,6 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    aaptOptions {
+        noCompress "tflite"
+        // or noCompress "lite"
+    }
 }
 
 dependencies {
@@ -58,4 +62,7 @@ dependencies {
     // Declare the dependency for the Cloud Storage library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-storage-ktx'
+
+    // Image labeling feature with custom bundled model
+    implementation 'com.google.mlkit:image-labeling-custom:16.3.1'
 }

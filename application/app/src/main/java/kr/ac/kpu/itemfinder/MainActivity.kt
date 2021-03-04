@@ -14,9 +14,14 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.mlkit.common.model.LocalModel
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.label.ImageLabeler
+import com.google.mlkit.vision.label.ImageLabeling
+import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import java.nio.ByteBuffer
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -29,6 +34,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
+    private lateinit var localModel: LocalModel
+    private lateinit var customImageLabelerOptions: CustomImageLabelerOptions
+    private lateinit var labeler: ImageLabeler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +57,27 @@ class MainActivity : AppCompatActivity() {
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        /////////////////////////////////////////////////////////////
+        // Firebase Storage
+
         // Storage Field Initialize
         storage = FirebaseStorage.getInstance()
         // Create a storage reference from our app
         storageRef = storage.reference
+
+        ////////////////////////////////////////////////////////////
+        // ML Kit
+
+        localModel = LocalModel.Builder().setAssetFilePath("model_old0220.tflite").build()
+                // or .setAbsoluteFilePath(absolute file path to model file)
+                // or .setUri(URI to model file)
+
+        customImageLabelerOptions = CustomImageLabelerOptions.Builder(localModel)
+                .setConfidenceThreshold(0.5f)
+                .setMaxResultCount(2)
+                .build()
+        labeler = ImageLabeling.getClient(customImageLabelerOptions)
+
     }
 
     private fun takePhoto() {
@@ -80,9 +105,10 @@ class MainActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
+                    //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                    //Log.d(TAG, msg)
 
+                    /*
                     // [START upload_file]
                     val serverRef = storageRef.child("images/${savedUri.lastPathSegment}")
                     val uploadTask = serverRef.putFile(savedUri)
@@ -93,10 +119,30 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(baseContext, "Photo Upload Fail\n${it.message}", Toast.LENGTH_SHORT).show()
                     }.addOnSuccessListener { taskSnapshot ->
                         // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                        // ...
                         Toast.makeText(baseContext, "Photo Upload Success", Toast.LENGTH_SHORT).show()
                     }
                     // [END upload_file]
+                    */
+
+                    val image: InputImage
+                    try {
+                        image = InputImage.fromFilePath(this@MainActivity, savedUri)
+                        labeler.process(image)
+                                .addOnSuccessListener { labels ->
+                                    // Task completed successfully
+                                    if(labels.isEmpty()) {
+                                        Toast.makeText(baseContext, "labeler.process Fail", Toast.LENGTH_SHORT).show()
+                                    }else {
+                                        Toast.makeText(baseContext, "labeler.process Success\n${labels[0].text}\n${labels[0].confidence}", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                                .addOnFailureListener { e ->
+                                    // Task failed with an exception
+                                    Toast.makeText(baseContext, "labeler.process Fail\n${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 }
             })
     }
@@ -171,4 +217,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    /*
+    private class YourImageAnalyzer : ImageAnalysis.Analyzer {
+
+        @SuppressLint("UnsafeExperimentalUsageError")
+        override fun analyze(imageProxy: ImageProxy) {
+            val mediaImage = imageProxy.image
+            if (mediaImage != null) {
+                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                // Pass image to an ML Kit Vision API
+                // ...
+            }
+        }
+    }
+
+    private fun imageFromMediaImage(mediaImage: Image, rotation: Int) {
+        // [START image_from_media_image]
+        val image = InputImage.fromMediaImage(mediaImage, rotation)
+        // [END image_from_media_image]
+    }
+    */
 }
