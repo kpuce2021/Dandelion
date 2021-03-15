@@ -3,6 +3,7 @@ package kr.ac.kpu.itemfinder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
@@ -53,21 +54,26 @@ class MainActivity : AppCompatActivity() {
         // Set up the listener for take photo button
         camera_capture_button.setOnClickListener { takePhoto() }
 
-        outputDirectory = getOutputDirectory()
+        help_button.setOnClickListener {
+            Toast.makeText(baseContext, "help_button clicked", Toast.LENGTH_SHORT).show()
+        }
+
+        //outputDirectory = getOutputDirectory()
+        outputDirectory = cacheDir
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         /////////////////////////////////////////////////////////////
+        /*
         // Firebase Storage
-
         // Storage Field Initialize
         storage = FirebaseStorage.getInstance()
         // Create a storage reference from our app
         storageRef = storage.reference
-
+         */
         ////////////////////////////////////////////////////////////
-        // ML Kit
 
+        // ML Kit
         localModel = LocalModel.Builder().setAssetFilePath("model_old0220.tflite").build()
                 // or .setAbsoluteFilePath(absolute file path to model file)
                 // or .setUri(URI to model file)
@@ -85,10 +91,13 @@ class MainActivity : AppCompatActivity() {
         val imageCapture = imageCapture ?: return
 
         // Create time-stamped output file to hold the image
+        /*
         val photoFile = File(
             outputDirectory,
             SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA
             ).format(System.currentTimeMillis()) + ".jpg")
+         */
+        val photoFile = File(outputDirectory, "temp.jpg")
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -134,6 +143,9 @@ class MainActivity : AppCompatActivity() {
                                         Toast.makeText(baseContext, "labeler.process Fail", Toast.LENGTH_SHORT).show()
                                     }else {
                                         Toast.makeText(baseContext, "labeler.process Success\n${labels[0].text}\n${labels[0].confidence}", Toast.LENGTH_SHORT).show()
+                                        val intent = Intent(baseContext, ResultActivity::class.java)
+                                        intent.putExtra("product_name", labels[0].text)
+                                        startActivity(intent)
                                     }
                                 }
                                 .addOnFailureListener { e ->
