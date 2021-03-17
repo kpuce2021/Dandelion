@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar">
+        <activity android:name=".HelpActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -28,7 +29,7 @@
             android:theme="@style/DefaultTheme" />
         <activity
             android:name=".ResultActivity"
-            android:theme="@style/DefaultTheme"/>
+            android:theme="@style/DefaultTheme" />
     </application>
 
 </manifest>

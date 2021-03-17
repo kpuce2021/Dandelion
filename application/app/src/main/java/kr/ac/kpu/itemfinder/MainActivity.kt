@@ -56,6 +56,8 @@ class MainActivity : AppCompatActivity() {
 
         help_button.setOnClickListener {
             Toast.makeText(baseContext, "help_button clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(baseContext, HelpActivity::class.java)
+            startActivity(intent)
         }
 
         //outputDirectory = getOutputDirectory()
