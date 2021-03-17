@@ -46,6 +46,16 @@ class HelpActivity : FragmentActivity() {
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUM_PAGES
 
-        override fun createFragment(position: Int): Fragment = fragment_screen_slide_page()
+        //override fun createFragment(position: Int): Fragment = fragment_screen_slide_page()
+        override fun createFragment(position: Int): Fragment {
+            when(position) {
+                0 -> return HelpFragment_01()
+                1 -> return HelpFragment_02()
+                2 -> return HelpFragment_03()
+                3 -> return HelpFragment_04()
+                4 -> return HelpFragment_05()
+            }
+            return HelpFragment_err()
+        }
     }
 }
