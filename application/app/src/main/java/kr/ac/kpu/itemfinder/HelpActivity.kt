@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
 private const val NUM_PAGES = 5
 
@@ -21,11 +22,15 @@ class HelpActivity : FragmentActivity() {
         setContentView(R.layout.activity_help)
 
         // Instantiate a ViewPager2 and a PagerAdapter.
-        viewPager = findViewById(R.id.pager)
+        viewPager = findViewById<ViewPager2>(R.id.pager)
 
         // The pager adapter, which provides the pages to the view pager widget.
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
+
+        // DotsIndicator
+        val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator)
+        dotsIndicator.setViewPager2(viewPager)
     }
 
     override fun onBackPressed() {
