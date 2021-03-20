@@ -1,23 +1,32 @@
 from logging import debug
 import flask
 from flask import Flask, request, render_template
-from flask.json import jsonify
 from keras.models import load_model
 import numpy as np
 from PIL import Image
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False  # jsonify에서 한글사용
 api = Api(app)
 
 
-@app.route('/API', methods=['POST', 'GET'])
-def pred():
+@app.route("/")
+@app.route("/index")
+def index():
+    return flask.render_template('index.html')
+
+# 데이터 예측 처리
+
+
+@app.route('/predict', methods=['POST'])
+def make_predictation():
     if request.method == 'POST':
+
+        # 업로드 파일 처리 분기
         file = request.files['image']
         if not file:
-            return jsonify({'1st': 'ERROR', '2nd': 'ERROR'})
+            return render_template('index.html', ml_label="No Files")
+
         # 이미지 픽셀 정보 읽기
         img = Image.open(file)
         img = img.convert("RGB")
@@ -27,10 +36,10 @@ def pred():
 
         # 이미지 예측
         prediction = model.predict(img)
+
         label = str(np.squeeze(prediction))
-        return jsonify({'1st': label})
-    if request.method == 'GET':
-        return 'get!'
+
+        return render_template('index.html', ml_label=label)
 
 
 if __name__ == '__main__':
