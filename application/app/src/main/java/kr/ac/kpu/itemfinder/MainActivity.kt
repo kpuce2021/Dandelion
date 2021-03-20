@@ -18,11 +18,23 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeler
 import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.default
+import id.zelory.compressor.constraint.destination
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.Dispatcher
+import okhttp3.MediaType
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.io.File
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.ExecutorService
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+
 typealias LumaListener = (luma: Double) -> Unit
 
 class MainActivity : AppCompatActivity() {
@@ -33,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var localModel: LocalModel
     private lateinit var customImageLabelerOptions: CustomImageLabelerOptions
     private lateinit var labeler: ImageLabeler
+
+    private lateinit var retrofit : Retrofit
+    private lateinit var retrofitService : RetrofitService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +72,9 @@ class MainActivity : AppCompatActivity() {
 
         //outputDirectory = getOutputDirectory()
         outputDirectory = cacheDir
-
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        /*
         // ML Kit
         localModel = LocalModel.Builder().setAssetFilePath("model_old0220.tflite").build()
                 // or .setAbsoluteFilePath(absolute file path to model file)
@@ -70,6 +85,10 @@ class MainActivity : AppCompatActivity() {
                 .setMaxResultCount(2)
                 .build()
         labeler = ImageLabeling.getClient(customImageLabelerOptions)
+         */
+
+        // Retrofit
+        initRetrofit()
 
     }
 
@@ -96,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
 
+                    /*
                     val image: InputImage
                     try {
                         image = InputImage.fromFilePath(this@MainActivity, savedUri)
@@ -118,10 +138,13 @@ class MainActivity : AppCompatActivity() {
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
+                     */
+                    val requestBody : RequestBody = RequestBody.create(MediaType.parse("image/*"), photoFile)
+                    val body : MultipartBody.Part = MultipartBody.Part.createFormData("image", "temp.jpg", requestBody)
+                    getProductInfo(retrofitService, body)
                 }
             })
     }
-
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
@@ -183,5 +206,22 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun initRetrofit() {
+        retrofit = RetrofitClient.getInstance()
+        retrofitService = retrofit.create(RetrofitService::class.java)
+    }
+
+    private fun getProductInfo(service: RetrofitService, body: MultipartBody.Part) {
+        service.productPredict(body).enqueue(object : Callback<ProductVO>{
+            override fun onFailure(call: Call<ProductVO>, t: Throwable) {
+                Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
+                Toast.makeText(baseContext, "getProductInfo_onResponse\n${response.body()!!}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }
