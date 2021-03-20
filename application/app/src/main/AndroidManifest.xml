@@ -3,8 +3,9 @@
     package="kr.ac.kpu.itemfinder">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +13,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ItemFinder">
+        android:theme="@android:style/Theme.NoTitleBar"
+        android:usesCleartextTraffic="true">
+
+        <activity android:name=".HelpActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -24,7 +28,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/DefaultTheme"/>
+            android:theme="@style/DefaultTheme" />
+        <activity
+            android:name=".ResultActivity"
+            android:theme="@style/DefaultTheme" />
     </application>
 
 </manifest>
