@@ -13,8 +13,6 @@ import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeler
@@ -23,7 +21,6 @@ import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 typealias LumaListener = (luma: Double) -> Unit
@@ -33,8 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
-    private lateinit var storage: FirebaseStorage
-    private lateinit var storageRef: StorageReference
     private lateinit var localModel: LocalModel
     private lateinit var customImageLabelerOptions: CustomImageLabelerOptions
     private lateinit var labeler: ImageLabeler
@@ -65,16 +60,6 @@ class MainActivity : AppCompatActivity() {
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        /////////////////////////////////////////////////////////////
-        /*
-        // Firebase Storage
-        // Storage Field Initialize
-        storage = FirebaseStorage.getInstance()
-        // Create a storage reference from our app
-        storageRef = storage.reference
-         */
-        ////////////////////////////////////////////////////////////
-
         // ML Kit
         localModel = LocalModel.Builder().setAssetFilePath("model_old0220.tflite").build()
                 // or .setAbsoluteFilePath(absolute file path to model file)
@@ -93,12 +78,6 @@ class MainActivity : AppCompatActivity() {
         val imageCapture = imageCapture ?: return
 
         // Create time-stamped output file to hold the image
-        /*
-        val photoFile = File(
-            outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.KOREA
-            ).format(System.currentTimeMillis()) + ".jpg")
-         */
         val photoFile = File(outputDirectory, "temp.jpg")
 
         // Create output options object which contains file + metadata
@@ -116,24 +95,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-                    //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    //Log.d(TAG, msg)
-
-                    /*
-                    // [START upload_file]
-                    val serverRef = storageRef.child("images/${savedUri.lastPathSegment}")
-                    val uploadTask = serverRef.putFile(savedUri)
-
-                    // Register observers to listen for when the download is done or if it fails
-                    uploadTask.addOnFailureListener {
-                        // Handle unsuccessful uploads
-                        Toast.makeText(baseContext, "Photo Upload Fail\n${it.message}", Toast.LENGTH_SHORT).show()
-                    }.addOnSuccessListener { taskSnapshot ->
-                        // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                        Toast.makeText(baseContext, "Photo Upload Success", Toast.LENGTH_SHORT).show()
-                    }
-                    // [END upload_file]
-                    */
 
                     val image: InputImage
                     try {
@@ -202,13 +163,6 @@ class MainActivity : AppCompatActivity() {
             baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun getOutputDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
-        return if (mediaDir != null && mediaDir.exists())
-            mediaDir else filesDir
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
@@ -216,9 +170,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "CameraXBasic"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -231,25 +184,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*
-    private class YourImageAnalyzer : ImageAnalysis.Analyzer {
-
-        @SuppressLint("UnsafeExperimentalUsageError")
-        override fun analyze(imageProxy: ImageProxy) {
-            val mediaImage = imageProxy.image
-            if (mediaImage != null) {
-                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                // Pass image to an ML Kit Vision API
-                // ...
-            }
-        }
-    }
-
-    private fun imageFromMediaImage(mediaImage: Image, rotation: Int) {
-        // [START image_from_media_image]
-        val image = InputImage.fromMediaImage(mediaImage, rotation)
-        // [END image_from_media_image]
-    }
-    */
 }
