@@ -1,39 +1,37 @@
 package kr.ac.kpu.itemfinder
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore.Images
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import com.google.mlkit.common.model.LocalModel
-import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeler
-import com.google.mlkit.vision.label.ImageLabeling
 import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
-import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.default
-import id.zelory.compressor.constraint.destination
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.Dispatcher
 import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
-import java.io.IOException
-import java.util.*
 import java.util.concurrent.ExecutorService
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import java.util.concurrent.Executors
+
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -58,7 +56,8 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
         }
 
         // Set up the listener for take photo button
@@ -105,7 +104,9 @@ class MainActivity : AppCompatActivity() {
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(
-            outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
@@ -139,8 +140,16 @@ class MainActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                      */
-                    val requestBody : RequestBody = RequestBody.create(MediaType.parse("image/*"), photoFile)
-                    val body : MultipartBody.Part = MultipartBody.Part.createFormData("image", "temp.jpg", requestBody)
+
+                    val requestBody: RequestBody = RequestBody.create(
+                        MediaType.parse("image/*"),
+                        photoFile
+                    )
+                    val body: MultipartBody.Part = MultipartBody.Part.createFormData(
+                        "image",
+                        "temp.jpg",
+                        requestBody
+                    )
                     getProductInfo(retrofitService, body)
                 }
             })
@@ -172,9 +181,10 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture)
+                    this, cameraSelector, preview, imageCapture
+                )
 
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
@@ -183,7 +193,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
+            baseContext, it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onDestroy() {
@@ -194,10 +205,17 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "CameraXBasic"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET)
+        private val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.INTERNET
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera()
@@ -214,14 +232,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getProductInfo(service: RetrofitService, body: MultipartBody.Part) {
-        service.productPredict(body).enqueue(object : Callback<ProductVO>{
+        service.productPredict(body).enqueue(object : Callback<ProductVO> {
             override fun onFailure(call: Call<ProductVO>, t: Throwable) {
-                Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT).show()
+                Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
-                Toast.makeText(baseContext, "getProductInfo_onResponse\n${response.body()!!}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    baseContext,
+                    "getProductInfo_onResponse\n${response.body()!!}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
+    }
+
+    private fun resize(imgUri: Uri): Bitmap {
+        val bitmap = Images.Media.getBitmap(contentResolver, imgUri)
+        val height = bitmap.height
+        val width = bitmap.width
+        val resizedBitmap : Bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
+        Toast.makeText(baseContext, "width = ${resizedBitmap.width}\nheight = ${resizedBitmap.height}", Toast.LENGTH_SHORT)
+            .show()
+        return resizedBitmap
     }
 }
