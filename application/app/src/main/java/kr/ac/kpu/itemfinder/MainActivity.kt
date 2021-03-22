@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore.Images
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.label.ImageLabeler
 import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso.LoadedFrom
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
@@ -104,19 +106,19 @@ class MainActivity : AppCompatActivity() {
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                }
+                outputOptions,
+                ContextCompat.getMainExecutor(this),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
+                    }
 
-                // 성공한 경우 업로드 진행
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
+                    // 성공한 경우 업로드 진행
+                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                        val savedUri = Uri.fromFile(photoFile)
+                        val msg = "Photo capture succeeded: $savedUri"
 
-                    /*
+                        /*
                     val image: InputImage
                     try {
                         image = InputImage.fromFilePath(this@MainActivity, savedUri)
@@ -141,18 +143,18 @@ class MainActivity : AppCompatActivity() {
                     }
                      */
 
-                    val requestBody: RequestBody = RequestBody.create(
-                        MediaType.parse("image/*"),
-                        photoFile
-                    )
-                    val body: MultipartBody.Part = MultipartBody.Part.createFormData(
-                        "image",
-                        "temp.jpg",
-                        requestBody
-                    )
-                    getProductInfo(retrofitService, body)
-                }
-            })
+                        val requestBody: RequestBody = RequestBody.create(
+                                MediaType.parse("image/*"),
+                                photoFile
+                        )
+                        val body: MultipartBody.Part = MultipartBody.Part.createFormData(
+                                "image",
+                                "temp.jpg",
+                                requestBody
+                        )
+                        getProductInfo(retrofitService, body)
+                    }
+                })
     }
 
     private fun startCamera() {
@@ -164,13 +166,13 @@ class MainActivity : AppCompatActivity() {
 
             // Preview
             val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(viewFinder.createSurfaceProvider())
-                }
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(viewFinder.createSurfaceProvider())
+                    }
 
             imageCapture = ImageCapture.Builder()
-                .build()
+                    .build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -181,7 +183,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture
+                        this, cameraSelector, preview, imageCapture
                 )
 
             } catch (exc: Exception) {
@@ -193,7 +195,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it
+                baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -206,15 +208,15 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "CameraXBasic"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.INTERNET
+                Manifest.permission.CAMERA,
+                Manifest.permission.INTERNET
         )
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<String>,
+            grantResults: IntArray
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
@@ -235,20 +237,21 @@ class MainActivity : AppCompatActivity() {
         service.productPredict(body).enqueue(object : Callback<ProductVO> {
             override fun onFailure(call: Call<ProductVO>, t: Throwable) {
                 Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT)
-                    .show()
+                        .show()
             }
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
                 Toast.makeText(
-                    baseContext,
-                    "getProductInfo_onResponse\n${response.body()!!}",
-                    Toast.LENGTH_SHORT
+                        baseContext,
+                        "getProductInfo_onResponse\n${response.body()!!}",
+                        Toast.LENGTH_SHORT
                 ).show()
             }
         })
     }
 
-    private fun resize(imgUri: Uri): Bitmap {
+    private fun resize(imgUri: Uri) {
+        /*
         val bitmap = Images.Media.getBitmap(contentResolver, imgUri)
         val height = bitmap.height
         val width = bitmap.width
@@ -256,5 +259,47 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(baseContext, "width = ${resizedBitmap.width}\nheight = ${resizedBitmap.height}", Toast.LENGTH_SHORT)
             .show()
         return resizedBitmap
+         */
+        Picasso.get().load(imgUri).resize(224, 224).into(object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom?) {
+                cacheDir
+            }
+
+            override fun onBitmapFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
+                Toast.makeText(
+                        baseContext,
+                        "Picasso.resize failed",
+                        Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            }
+
+        })
+    }
+
+    fun SaveImage(url: String?) {
+        Picasso.with(applicationContext).load(url).into(object : Target() {
+            fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom?) {
+                try {
+                    val mydir: File = File(Environment.getExternalStorageDirectory().toString() + "/ 11zon")
+                    if (!mydir.exists()) {
+                        mydir.mkdirs()
+                    }
+                    fileUri = mydir.absolutePath + File.separator + System.currentTimeMillis() + ".jpg"
+                    val outputStream = FileOutputStream(fileUri)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                    outputStream.flush()
+                    outputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                Toast.makeText(applicationContext, "이미지 다운로드 됨", Toast.LENGTH_LONG).show()
+            }
+
+            fun onBitmapFailed(errorDrawable: Drawable?) {}
+            fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+        })
     }
 }
