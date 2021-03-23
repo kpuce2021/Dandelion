@@ -31,6 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -143,16 +144,11 @@ class MainActivity : AppCompatActivity() {
                     }
                      */
 
-                        val requestBody: RequestBody = RequestBody.create(
-                                MediaType.parse("image/*"),
-                                photoFile
-                        )
-                        val body: MultipartBody.Part = MultipartBody.Part.createFormData(
-                                "image",
-                                "temp.jpg",
-                                requestBody
-                        )
-                        getProductInfo(retrofitService, body)
+                        //val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), photoFile)
+                        //val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "temp.jpg", requestBody)
+                        //getProductInfo(retrofitService, body)
+
+                        resize(savedUri)
                     }
                 })
     }
@@ -171,8 +167,7 @@ class MainActivity : AppCompatActivity() {
                         it.setSurfaceProvider(viewFinder.createSurfaceProvider())
                     }
 
-            imageCapture = ImageCapture.Builder()
-                    .build()
+            imageCapture = ImageCapture.Builder().build()
 
             // Select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -182,9 +177,7 @@ class MainActivity : AppCompatActivity() {
                 cameraProvider.unbindAll()
 
                 // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview, imageCapture
-                )
+                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
@@ -194,9 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-                baseContext, it
-        ) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onDestroy() {
@@ -207,10 +198,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "CameraXBasic"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.INTERNET
-        )
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.INTERNET)
     }
 
     override fun onRequestPermissionsResult(
@@ -236,70 +224,41 @@ class MainActivity : AppCompatActivity() {
     private fun getProductInfo(service: RetrofitService, body: MultipartBody.Part) {
         service.productPredict(body).enqueue(object : Callback<ProductVO> {
             override fun onFailure(call: Call<ProductVO>, t: Throwable) {
-                Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT)
-                        .show()
+                Toast.makeText(baseContext, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
-                Toast.makeText(
-                        baseContext,
-                        "getProductInfo_onResponse\n${response.body()!!}",
-                        Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(baseContext, "getProductInfo_onResponse\n${response.body()!!}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun resize(imgUri: Uri) {
-        /*
-        val bitmap = Images.Media.getBitmap(contentResolver, imgUri)
-        val height = bitmap.height
-        val width = bitmap.width
-        val resizedBitmap : Bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, true)
-        Toast.makeText(baseContext, "width = ${resizedBitmap.width}\nheight = ${resizedBitmap.height}", Toast.LENGTH_SHORT)
-            .show()
-        return resizedBitmap
-         */
         Picasso.get().load(imgUri).resize(224, 224).into(object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom?) {
-                cacheDir
+                try {
+                    val resize_file: File = File(outputDirectory, "resize_temp.jpg")
+                    resize_file.createNewFile()
+                    val osstream: FileOutputStream = FileOutputStream(resize_file)
+                    bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, osstream)
+                    osstream.flush()
+                    osstream.close()
+                    val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resize_file)
+                    val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "temp.jpg", requestBody)
+                    getProductInfo(retrofitService, body)
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(baseContext, "resize_temp.jpg load failed", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onBitmapFailed(e: java.lang.Exception?, errorDrawable: Drawable?) {
-                Toast.makeText(
-                        baseContext,
-                        "Picasso.resize failed",
-                        Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(baseContext, "Picasso.resize failed", Toast.LENGTH_SHORT).show()
             }
 
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             }
 
-        })
-    }
-
-    fun SaveImage(url: String?) {
-        Picasso.with(applicationContext).load(url).into(object : Target() {
-            fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom?) {
-                try {
-                    val mydir: File = File(Environment.getExternalStorageDirectory().toString() + "/ 11zon")
-                    if (!mydir.exists()) {
-                        mydir.mkdirs()
-                    }
-                    fileUri = mydir.absolutePath + File.separator + System.currentTimeMillis() + ".jpg"
-                    val outputStream = FileOutputStream(fileUri)
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                    outputStream.flush()
-                    outputStream.close()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                Toast.makeText(applicationContext, "이미지 다운로드 됨", Toast.LENGTH_LONG).show()
-            }
-
-            fun onBitmapFailed(errorDrawable: Drawable?) {}
-            fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
         })
     }
 }
