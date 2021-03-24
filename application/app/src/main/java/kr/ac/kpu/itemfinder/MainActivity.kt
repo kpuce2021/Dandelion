@@ -1,9 +1,11 @@
 package kr.ac.kpu.itemfinder
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -31,6 +33,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -189,7 +192,19 @@ class MainActivity : AppCompatActivity() {
                         }
                          */
 
-                        resize(savedUri)
+                        //resize(savedUri)
+                        val bitmap = resize(baseContext, savedUri, 500)
+                        //val time = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis())
+                        val resizeImage = File(baseContext.cacheDir, "resize.jpg")
+                        resizeImage.createNewFile()
+                        val fileOutputStream = FileOutputStream(resizeImage)
+                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+                        fileOutputStream.flush()
+                        fileOutputStream.close()
+
+                        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resizeImage)
+                        val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "resize.jpg", requestBody)
+                        getProductInfo(retrofitService, body)
                     }
                 })
     }
@@ -237,5 +252,28 @@ class MainActivity : AppCompatActivity() {
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
             }
         })
+    }
+
+    private fun resize(context: Context, uri: Uri, resize: Int): Bitmap? {
+        var resizeBitmap: Bitmap? = null
+        val options = BitmapFactory.Options()
+        try {
+            BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options) // 1번
+            var width = options.outWidth
+            var height = options.outHeight
+            var samplesize = 1
+            while (true) { //2번
+                if (width / 2 < resize || height / 2 < resize) break
+                width /= 2
+                height /= 2
+                samplesize *= 2
+            }
+            options.inSampleSize = samplesize
+            val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options) //3번
+            resizeBitmap = bitmap
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+        return resizeBitmap
     }
 }
