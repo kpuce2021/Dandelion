@@ -1,10 +1,10 @@
 package kr.ac.kpu.itemfinder
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.ActionOnlyNavDirections
 import androidx.navigation.Navigation
-import com.squareup.picasso.Picasso
 import kr.ac.kpu.itemfinder.RetrofitClient.getProductInfo
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -30,7 +29,6 @@ import retrofit2.Retrofit
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -149,7 +147,8 @@ class CameraFragment : Fragment() {
                 this, cameraSelector, preview, imageCapture)
 
             // Attach the viewfinder's surface provider to preview use case
-            preview?.setSurfaceProvider(viewFinder.createSurfaceProvider())
+            //preview?.setSurfaceProvider(viewFinder.createSurfaceProvider())
+            preview?.setSurfaceProvider(viewFinder.surfaceProvider)
         } catch (exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }
@@ -163,6 +162,11 @@ class CameraFragment : Fragment() {
 
         // Inflate a new view containing all UI for controlling the camera
         val controls = View.inflate(requireContext(), R.layout.camera_ui_container, container)
+
+        controls.findViewById<Button>(R.id.help_button).setOnClickListener {
+            val intent = Intent(requireContext(), HelpActivity::class.java)
+            startActivity(intent)
+        }
 
         // Listener for button used to capture photo
         controls.findViewById<Button>(R.id.camera_capture_button).setOnClickListener {
@@ -180,7 +184,6 @@ class CameraFragment : Fragment() {
                         Log.d(TAG, "Photo capture succeeded: $savedUri")
 
                         val bitmap = resize(requireContext(), savedUri, 500)
-                        //val time = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis())
                         val resizeImage = File(requireContext().cacheDir, "resize.jpg")
                         resizeImage.createNewFile()
                         val fileOutputStream = FileOutputStream(resizeImage)

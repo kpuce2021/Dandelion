@@ -1,7 +1,9 @@
 package kr.ac.kpu.itemfinder
 
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -38,10 +40,10 @@ object RetrofitClient {
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
                 Toast.makeText(context, "getProductInfo_onResponse\n${response.body()!!}", Toast.LENGTH_SHORT).show()
-                try {
-                    File(context.cacheDir.absolutePath+"resize_temp.jpg").delete()
-                }catch (e: Exception) {
-                }
+                val intent = Intent(context, MainActivity::class.java)
+                intent.putExtra("product_name", response.body()!!.product_name)
+                intent.putExtra("product_confidence", response.body()!!.product_confidence)
+                startActivity(context, intent, null)
             }
         })
     }

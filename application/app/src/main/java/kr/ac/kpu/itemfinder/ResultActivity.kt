@@ -9,6 +9,6 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
-        product_name_textview.text = intent.getStringExtra("product_name")
+        product_name_textview.text = intent.getStringExtra("product_name")+"\n"+intent.getStringExtra("product_confidence")
     }
 }
