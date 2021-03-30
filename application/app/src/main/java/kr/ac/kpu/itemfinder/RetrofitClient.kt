@@ -2,6 +2,7 @@ package kr.ac.kpu.itemfinder
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.google.gson.GsonBuilder
@@ -39,10 +40,10 @@ object RetrofitClient {
             }
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
-                Toast.makeText(context, "getProductInfo_onResponse\n${response.body()!!}", Toast.LENGTH_SHORT).show()
                 val intent = Intent(context, MainActivity::class.java)
                 intent.putExtra("product_name", response.body()!!.product_name)
                 intent.putExtra("product_confidence", response.body()!!.product_confidence)
+                intent.flags = FLAG_ACTIVITY_SINGLE_TOP
                 startActivity(context, intent, null)
             }
         })

@@ -147,10 +147,9 @@ class CameraFragment : Fragment() {
                 this, cameraSelector, preview, imageCapture)
 
             // Attach the viewfinder's surface provider to preview use case
-            //preview?.setSurfaceProvider(viewFinder.createSurfaceProvider())
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
         } catch (exc: Exception) {
-            Log.e(TAG, "Use case binding failed", exc)
+            Log.e("CameraXBasic", "Use case binding failed", exc)
         }
     }
 
@@ -181,23 +180,15 @@ class CameraFragment : Fragment() {
                 imageCapture.takePicture(outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
-                        Log.d(TAG, "Photo capture succeeded: $savedUri")
+                        Log.d("CameraXBasic", "Photo capture succeeded: $savedUri")
 
-                        val bitmap = resize(requireContext(), savedUri, 500)
-                        val resizeImage = File(requireContext().cacheDir, "resize.jpg")
-                        resizeImage.createNewFile()
-                        val fileOutputStream = FileOutputStream(resizeImage)
-                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-                        fileOutputStream.flush()
-                        fileOutputStream.close()
-
-                        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resizeImage)
+                        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resize(requireContext(), savedUri, 500))
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "resize.jpg", requestBody)
                         getProductInfo(requireContext(), retrofitService, body)
                     }
 
                     override fun onError(exception: ImageCaptureException) {
-                        Log.e(TAG, "Photo capture failed: ${exception.message}", exception)
+                        Log.e("CameraXBasic", "Photo capture failed: ${exception.message}", exception)
                     }
 
                 })
@@ -210,7 +201,7 @@ class CameraFragment : Fragment() {
         retrofitService = retrofit.create(RetrofitService::class.java)
     }
 
-    private fun resize(context: Context, uri: Uri, resize: Int): Bitmap? {
+    private fun resize(context: Context, uri: Uri, resize: Int): File {
         var resizeBitmap: Bitmap? = null
         val options = BitmapFactory.Options()
         try {
@@ -218,7 +209,7 @@ class CameraFragment : Fragment() {
             var width = options.outWidth
             var height = options.outHeight
             var samplesize = 1
-            while (true) { //2번
+            while (true) {
                 if (width / 2 < resize || height / 2 < resize) break
                 width /= 2
                 height /= 2
@@ -230,10 +221,12 @@ class CameraFragment : Fragment() {
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
-        return resizeBitmap
-    }
-
-    companion object {
-        private const val TAG = "CameraXBasic"
+        val resizeImage = File(requireContext().cacheDir, "resize.jpg")
+        resizeImage.createNewFile()
+        val fileOutputStream = FileOutputStream(resizeImage)
+        resizeBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+        fileOutputStream.flush()
+        fileOutputStream.close()
+        return resizeImage
     }
 }
