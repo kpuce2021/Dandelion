@@ -3,6 +3,7 @@ package kr.ac.kpu.itemfinder
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.google.gson.GsonBuilder
@@ -14,6 +15,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.lang.Exception
+import kotlin.math.log
 
 object RetrofitClient {
     private var instance: Retrofit? = null
@@ -40,7 +42,8 @@ object RetrofitClient {
             }
 
             override fun onResponse(call: Call<ProductVO>, response: Response<ProductVO>) {
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, ResultActivity::class.java)
+                Log.i("getProductInfo", response.body().toString())
                 intent.putExtra("product_name", response.body()!!.product_name)
                 intent.putExtra("product_confidence", response.body()!!.product_confidence)
                 intent.flags = FLAG_ACTIVITY_SINGLE_TOP
