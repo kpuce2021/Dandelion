@@ -36,38 +36,53 @@ PuTTY를 이용하여 EC2에 접근하기 위해서는 pem이 아닌 private key
 
 ## 첫 연결 시 필요한 설정
 - 패키지 업데이트 확인 및 진행
-	> sudo apt-get update
-	> sudo apt-get upgrade
-
+	```
+	sudo apt-get update
+	sudo apt-get upgrade
+	```
 - 파이썬 버전 확인 및 업데이트, 가상환경 설치
-	> python3 --version
-	> sudo apt-get install python 3.5
-	> sudo apt-get install pyhon3-pip
-	> sudo apt-get install virtualenv
+	```
+	python3 --version
+	sudo apt-get install python 3.5
+	sudo apt-get install pyhon3-pip
+	sudo apt-get install virtualenv
+	```
 
 - 가상환경 생성 및 실행
-	> virtualenv --python=python3 kpu
-	> source ./kpu/bin/activate
-		> - kpu라는 이름의 가상환경을 생성하는 코드
+	```
+	virtualenv --python=python3 kpu
+	source ./kpu/bin/activate
+	```
+	> kpu라는 이름의 가상환경을 생성하는 코드
 
 - 가상환경 내부 설정
-	> pip install flask
-	> pip install tensorflow
-		> - 그 외 필요한 라이브러리 설치
+	```
+	pip install flask
+	pip install tensorflow
+	```
+	> 그 외 필요한 라이브러리 설치
 
 ## 이후 접속할 경우
 - 가상환경 실행
-	> source ./kpu/bin/activate
+	```
+	source ./kpu/bin/activate
+	```
 - 서버 배포
-	> python server.py
-		> - 여기서 server.py는 배포할 파일 명을 입력하면 된다.
+	```
+	python server.py
+	```
+	> 여기서 server.py는 배포할 파일 명을 입력하면 된다.
 
 ## 가상환경 내에서 파일을 수정하길 원하는 경우
 - 코드
-	> sudo nano server.py
+	```
+	sudo nano server.py
+	```
 - 단축키
-	> 저장: ctrl+o
-	> 나가기: ctrl+x
+	```
+	저장: ctrl+o
+	나가기: ctrl+x
+	```
 
 ## 로컬 컴퓨터에서 EC2로 파일을 옮기길 원하는 경우
 - WinSCP로 접속
