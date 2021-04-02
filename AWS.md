@@ -87,12 +87,11 @@ PuTTY를 이용하여 EC2에 접근하기 위해서는 pem이 아닌 private key
 ## 로컬 컴퓨터에서 EC2로 파일을 옮기길 원하는 경우
 - WinSCP로 접속
 	> 로그인 설정
-		> - 파일 프로토콜: SFTP
-		> - Host Name (or IP address) : EC2 대시보드에서 퍼블릭 DNS 이름 또는 퍼블릭 IPv4 주소 입력
-		> -  Port: 22
-		> - 사용자 이름: ubuntu
-		> - 비밀번호: 공란
-		> - 고급
-			> -- SSH-인증 탭의 인증 매개변수에서 ppk 파일 로드 후 확인
+	>	> * 파일 프로토콜: SFTP
+	>	> * Host Name (or IP address) : EC2 대시보드에서 퍼블릭 DNS 이름 또는 퍼블릭 IPv4 주소 입력
+	>	> *  Port: 22
+	>	> * 사용자 이름: ubuntu
+	>	> * 비밀번호: 공란
+	>	> * 고급: SSH-인증 탭의 인증 매개변수에서 ppk 파일 로드 후 확인
 - WinSCP로 접속 후
 	> 로컬 컴퓨터에서 EC2로 파일 드래그 앤 드롭으로 옮길 수 있음.
