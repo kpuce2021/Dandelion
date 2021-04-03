@@ -26,6 +26,6 @@ class SplashActivity : AppCompatActivity() {
             intent.flags = FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()
-        }, 1500L)
+        }, 500L)
     }
 }
