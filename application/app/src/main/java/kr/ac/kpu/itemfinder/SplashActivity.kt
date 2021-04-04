@@ -13,16 +13,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         Handler().postDelayed({
-            val sPreferences: SharedPreferences = getSharedPreferences("help_flag", MODE_PRIVATE);
-            val sPreferencesEditor: SharedPreferences.Editor = sPreferences.edit()
-            lateinit var intent: Intent
-            if(sPreferences.getInt("help", 0) == 0){
-                sPreferencesEditor.putInt("help", 1)
-                sPreferencesEditor.apply()
-                intent = Intent(this@SplashActivity, HelpActivity::class.java)
-            }else {
-                intent = Intent(this@SplashActivity, MainActivity::class.java)
-            }
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             intent.flags = FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()

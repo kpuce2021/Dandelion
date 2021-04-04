@@ -54,11 +54,11 @@ class HelpActivity : FragmentActivity() {
         //override fun createFragment(position: Int): Fragment = fragment_screen_slide_page()
         override fun createFragment(position: Int): Fragment {
             when(position) {
-                0 -> return HelpFragment_01()
-                1 -> return HelpFragment_02()
-                2 -> return HelpFragment_03()
-                3 -> return HelpFragment_04()
-                4 -> return HelpFragment_05()
+                0 -> return HelpFragment_start()
+                1 -> return HelpFragment_mid01()
+                2 -> return HelpFragment_mid02()
+                3 -> return HelpFragment_mid03()
+                4 -> return HelpFragment_end()
             }
             return HelpFragment_err()
         }
