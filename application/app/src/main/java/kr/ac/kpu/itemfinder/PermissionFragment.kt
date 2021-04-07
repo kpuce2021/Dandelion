@@ -34,7 +34,7 @@ class PermissionFragment : Fragment() {
                 // Take the user to the success fragment when permission is granted
                 navigateToCamera()
             } else {
-                activity?.finish()
+                requireActivity().finish()
             }
         }
     }

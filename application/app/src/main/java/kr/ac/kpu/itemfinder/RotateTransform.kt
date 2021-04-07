@@ -1,13 +1,12 @@
 package kr.ac.kpu.itemfinder
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import java.security.MessageDigest
 
-open class RotateTransform(context: Context?, rotateRotationAngle: Float) : BitmapTransformation() {
+class RotateTransform(rotateRotationAngle: Float) : BitmapTransformation() {
     private var rotateRotationAngle = 0f
     init {
         this.rotateRotationAngle = rotateRotationAngle

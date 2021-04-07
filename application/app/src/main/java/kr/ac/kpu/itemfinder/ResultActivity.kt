@@ -1,7 +1,6 @@
 package kr.ac.kpu.itemfinder
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
@@ -18,22 +17,18 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
-        product_name_button.text = intent.getStringExtra("product_name")+"\n"+intent.getStringExtra("product_confidence")
         val options = RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
-
-        val img = File(cacheDir,"resize.jpg")
-        var exif : ExifInterface? = null
         try {
-            exif = ExifInterface(File(cacheDir,"temp.jpg"))
-            Toast.makeText(baseContext, "rotationDegrees = ${exif.rotationDegrees}", Toast.LENGTH_SHORT).show()
-            when(exif.rotationDegrees) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> Glide.with(this).load(img).transform(RotateTransform(baseContext, 90f)).apply(options).into(product_img_imageview)
-                ExifInterface.ORIENTATION_ROTATE_180 -> Glide.with(this).load(img).transform(RotateTransform(baseContext, 180f)).apply(options).into(product_img_imageview)
-                ExifInterface.ORIENTATION_ROTATE_270 -> Glide.with(this).load(img).transform(RotateTransform(baseContext, 270f)).apply(options).into(product_img_imageview)
-                else -> Glide.with(this).load(img).apply(options).into(product_img_imageview)
+            when(ExifInterface(File(cacheDir,"temp.jpg")).rotationDegrees) {
+                90 -> options.transform(RotateTransform( 90f))
+                180 -> options.transform(RotateTransform( 180f))
+                270 -> options.transform(RotateTransform( 270f))
             }
         } catch (e: IOException) {
             e.printStackTrace()
         }
+        product_img_imageview.contentDescription = intent.getStringExtra("product_name")
+        product_name_button.text = "${intent.getStringExtra("product_name")}\n${intent.getStringExtra("product_confidence")}"
+        Glide.with(this).load(File(cacheDir,"resize.jpg")).apply(options).into(product_img_imageview)
     }
 }
