@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class HelpFragment_mid02 : Fragment() {
+class HelpFragmentStart : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_help_mid02, container, false)
+        return inflater.inflate(R.layout.fragment_help_start, container, false)
     }
 }
