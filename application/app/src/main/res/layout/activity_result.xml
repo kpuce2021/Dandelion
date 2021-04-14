@@ -4,17 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#C5E1A5"
     tools:context=".ResultActivity">
 
-    <TextView
-        android:id="@+id/product_name_textview"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/result_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75"
+        />
+
+    <ImageView
+        android:id="@+id/product_img_imageview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/product_img_button"
+        app:layout_constraintRight_toRightOf="@id/product_img_button"
+        app:layout_constraintTop_toTopOf="@id/product_img_button"
+        app:layout_constraintBottom_toBottomOf="@+id/product_img_button"
+        android:layout_margin="15dp"
+        android:elevation="30dp"
+        android:contentDescription="@string/result_imageview_description"/>
+
+    <Button
+        android:id="@+id/product_img_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="0dp"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:background="@drawable/button_result"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#000000"/>
+        app:layout_constraintBottom_toTopOf="@+id/result_guideline"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="30dp"
+        android:clickable="false" />
+
+    <Button
+        android:id="@+id/product_name_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:background="@drawable/button_result"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/result_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="30dp"
+        android:stateListAnimator="@null" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

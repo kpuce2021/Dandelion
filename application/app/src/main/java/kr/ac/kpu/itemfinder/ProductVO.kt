@@ -1,3 +1,3 @@
 package kr.ac.kpu.itemfinder
 
-data class ProductVO(var confidence : String)
+data class ProductVO(var product_confidence : String, var product_name : String)
