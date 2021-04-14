@@ -204,7 +204,7 @@ class CameraFragment : Fragment() {
         var resizeBitmap: Bitmap? = null
         val options = BitmapFactory.Options()
         try {
-            BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options) // 1번
+            BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)
             var width = options.outWidth
             var height = options.outHeight
             var samplesize = 1
@@ -215,7 +215,7 @@ class CameraFragment : Fragment() {
                 samplesize *= 2
             }
             options.inSampleSize = samplesize
-            val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options) //3번
+            val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)
             resizeBitmap = bitmap
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
