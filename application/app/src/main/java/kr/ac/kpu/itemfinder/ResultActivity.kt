@@ -32,8 +32,13 @@ class ResultActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         product_img_imageview.contentDescription = intent.getStringExtra("product_name")
-        product_name_button.text = "${intent.getStringExtra("product_name")}\n${intent.getStringExtra("product_confidence")}"
         Glide.with(this).load(File(cacheDir,"resize.jpg")).apply(options).into(product_img_imageview)
+
+        product_name_button.text = "${intent.getStringExtra("product_name")}\n${intent.getStringExtra("product_confidence")}"
+        product_name_button.setOnLongClickListener {
+            finish()
+            true
+        }
 
         val vibrator : Vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
