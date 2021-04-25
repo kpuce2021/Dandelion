@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C5E1A5"
+    android:background="#141420"
     tools:context=".ResultActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -33,7 +33,7 @@
         android:layout_height="0dp"
         android:textColor="#000000"
         android:textSize="24sp"
-        android:background="@drawable/button_result"
+        android:background="@drawable/button_dark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,10 +49,10 @@
         android:id="@+id/product_name_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:background="@drawable/button_result"
+        android:background="@drawable/button_dark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result_guideline"
