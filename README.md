@@ -54,6 +54,7 @@
 ## 사용 환경 및 사용 라이브러리
 |라이브러리|목적|사용환경|
 |:--------:|:---:|:---:|
+|CameraX|카메라|Android|
 |Retrofit2|HTTP 통신|Android|
 |Glide|Image 호출|Android|
 |Flask|Web Server|Server|
