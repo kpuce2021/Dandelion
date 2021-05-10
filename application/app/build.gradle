@@ -72,4 +72,7 @@ dependencies {
 
     // ExifInterface
     implementation "androidx.exifinterface:exifinterface:1.3.2"
+    
+    implementation group: 'com.squareup.okhttp3', name:'okhttp', version:'4.5.0'
+    implementation group: 'com.squareup.okhttp3', name:'logging-interceptor', version:'4.5.0'
 }

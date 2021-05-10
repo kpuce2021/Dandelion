@@ -52,5 +52,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, HelpActivity::class.java)
             startActivity(intent)
         }
+
     }
+
 }
