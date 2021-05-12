@@ -8,5 +8,5 @@ interface RetrofitService {
     //@Headers("accept: application/json", "content-type: application/json")
     @Multipart
     @POST("API")
-    fun productPredict(@Part imageFile : MultipartBody.Part) : Call<List<ProductVO>>
+    fun productPredict(@Part imageFile : MultipartBody.Part) : Call<List<ProductVO2>>
 }

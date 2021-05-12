@@ -1,41 +1,13 @@
 package kr.ac.kpu.itemfinder
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
-//import com.google.mlkit.common.model.LocalModel
-//import com.google.mlkit.vision.common.InputImage
-//import com.google.mlkit.vision.label.ImageLabeler
-//import com.google.mlkit.vision.label.ImageLabeling
-//import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions
-//import id.zelory.compressor.Compressor
-//import id.zelory.compressor.constraint.default
-//import id.zelory.compressor.constraint.destination
-import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.Dispatcher
-import okhttp3.MediaType
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import java.io.File
-import java.io.IOException
-import java.util.*
-import java.util.concurrent.ExecutorService
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 private const val IMMERSIVE_FLAG_TIMEOUT = 500L
 
@@ -52,7 +24,16 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, HelpActivity::class.java)
             startActivity(intent)
         }
-
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                val intent = Intent("key_event_action").apply { putExtra("key_event_extra", keyCode) }
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+                true
+            }
+            else -> super.onKeyDown(keyCode, event)
+        }
+    }
 }
