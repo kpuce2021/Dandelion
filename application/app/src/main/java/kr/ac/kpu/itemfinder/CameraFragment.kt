@@ -1,24 +1,29 @@
 package kr.ac.kpu.itemfinder
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.net.toFile
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.ActionOnlyNavDirections
 import androidx.navigation.Navigation
 import kr.ac.kpu.itemfinder.RetrofitClient.getProductInfo
@@ -29,6 +34,8 @@ import retrofit2.Retrofit
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.Math.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -49,6 +56,7 @@ class CameraFragment : Fragment() {
     private var cameraProvider: ProcessCameraProvider? = null
 
     private lateinit var cameraExecutor: ExecutorService
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +67,7 @@ class CameraFragment : Fragment() {
         super.onResume()
         if(!PermissionFragment.hasPermissions(requireContext())) {
             Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                ActionOnlyNavDirections(R.id.action_permissions_to_camera)
+                    ActionOnlyNavDirections(R.id.action_permissions_to_camera)
             )
         }
     }
@@ -75,6 +83,9 @@ class CameraFragment : Fragment() {
 
         // Shut down our background executor
         cameraExecutor.shutdown()
+
+        // Unregister the broadcast receivers and listeners
+        broadcastManager.unregisterReceiver(volumeDownReceiver)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +95,12 @@ class CameraFragment : Fragment() {
 
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        broadcastManager = LocalBroadcastManager.getInstance(view.context)
+
+        // Set up the intent filter that will receive events from our main activity
+        val filter = IntentFilter().apply { addAction("key_event_action") }
+        broadcastManager.registerReceiver(volumeDownReceiver, filter)
 
         // Determine the output directory
         outputDirectory = requireContext().cacheDir
@@ -128,12 +145,15 @@ class CameraFragment : Fragment() {
         // CameraSelector
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+        // Get screen metrics used to setup camera for full screen resolution
+        val rotation = viewFinder.display.rotation
+
         // Preview
-        preview = Preview.Builder().build()
+        preview = Preview.Builder().setTargetRotation(rotation).build()
 
         // ImageCapture
-        imageCapture = ImageCapture.Builder().setTargetResolution(Size(480, 640))
-            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+        imageCapture = ImageCapture.Builder().setTargetRotation(rotation)
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).setTargetResolution(Size(480, 640))
             .build()
 
         // Must unbind the use-cases before rebinding them
@@ -143,7 +163,7 @@ class CameraFragment : Fragment() {
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
             camera = cameraProvider.bindToLifecycle(
-                this, cameraSelector, preview, imageCapture)
+                    this, cameraSelector, preview, imageCapture)
 
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
@@ -176,12 +196,14 @@ class CameraFragment : Fragment() {
                 // Create output options object which contains file + metadata
                 val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
+
                 imageCapture.takePicture(outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
                         Log.d("CameraXBasic", "Photo capture succeeded: $savedUri")
 
-                        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resize(requireContext(), savedUri, 500))
+                        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resize(requireContext(), savedUri, 1280))
+                        //val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), photoFile)
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "resize.jpg", requestBody)
                         getProductInfo(requireContext(), retrofitService, body)
                     }
@@ -216,7 +238,18 @@ class CameraFragment : Fragment() {
             }
             options.inSampleSize = samplesize
             val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)
-            resizeBitmap = bitmap
+            try {
+                val rotation = ExifInterface(uri.toFile()).rotationDegrees
+                resizeBitmap = when(rotation) {
+                    90 -> rotateImage(bitmap!!, 90f)
+                    180 -> rotateImage(bitmap!!, 180f)
+                    270 -> rotateImage(bitmap!!, 270f)
+                    else -> bitmap
+                }
+                Log.d("rotation", "result_rotation: $rotation")
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -227,5 +260,24 @@ class CameraFragment : Fragment() {
         fileOutputStream.flush()
         fileOutputStream.close()
         return resizeImage
+    }
+
+    private fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
+
+    private val volumeDownReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("func", "onReceive")
+            when(intent?.getIntExtra("key_event_extra", KeyEvent.KEYCODE_UNKNOWN)) {
+                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                    Log.d("button", "볼륨 아래 버튼 클릭")
+                    val shutter = container.findViewById<Button>(R.id.camera_capture_button)
+                    shutter.performClick()
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.exifinterface.media.ExifInterface
 import com.bumptech.glide.Glide
@@ -22,15 +23,7 @@ class ResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
 
         val options = RequestOptions().skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
-        try {
-            when(ExifInterface(File(cacheDir,"temp.jpg")).rotationDegrees) {
-                90 -> options.transform(RotateTransform( 90f))
-                180 -> options.transform(RotateTransform( 180f))
-                270 -> options.transform(RotateTransform( 270f))
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+
         product_img_imageview.contentDescription = intent.getStringExtra("product_name")
         Glide.with(this).load(File(cacheDir,"resize.jpg")).apply(options).into(product_img_imageview)
 
