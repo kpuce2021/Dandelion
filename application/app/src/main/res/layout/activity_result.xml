@@ -15,18 +15,32 @@
         app:layout_constraintGuide_percent="0.75"
         />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/product_img_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/button_dark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/result_guideline"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
     <ImageView
         android:id="@+id/product_img_imageview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@id/product_img_button"
-        app:layout_constraintRight_toRightOf="@id/product_img_button"
-        app:layout_constraintTop_toTopOf="@id/product_img_button"
-        app:layout_constraintBottom_toBottomOf="@+id/product_img_button"
+        app:layout_constraintLeft_toLeftOf="@id/product_img_layout"
+        app:layout_constraintRight_toRightOf="@id/product_img_layout"
+        app:layout_constraintTop_toTopOf="@id/product_img_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/product_img_layout"
         android:layout_margin="15dp"
-        android:elevation="30dp"
         android:contentDescription="@string/result_imageview_description"/>
 
+    <!--
     <Button
         android:id="@+id/product_img_button"
         android:layout_width="match_parent"
@@ -45,6 +59,18 @@
         android:elevation="30dp"
         android:clickable="false" />
 
+    <ImageView
+        android:id="@+id/product_img_imageview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/product_img_button"
+        app:layout_constraintRight_toRightOf="@id/product_img_button"
+        app:layout_constraintTop_toTopOf="@id/product_img_button"
+        app:layout_constraintBottom_toBottomOf="@+id/product_img_button"
+        android:layout_margin="15dp"
+        android:elevation="31dp"
+        android:contentDescription="@string/result_imageview_description"/>
+    -->
     <Button
         android:id="@+id/product_name_button"
         android:layout_width="match_parent"
