@@ -8,11 +8,19 @@
     tools:context=".ResultActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/result_guideline"
+        android:id="@+id/imgview_guideline"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75"
+        app:layout_constraintGuide_percent="0.65"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tv_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +31,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/result_guideline"
+        app:layout_constraintBottom_toTopOf="@+id/imgview_guideline"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
@@ -40,54 +48,49 @@
         android:layout_margin="15dp"
         android:contentDescription="@string/result_imageview_description"/>
 
-    <!--
-    <Button
-        android:id="@+id/product_img_button"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/product_name_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textColor="#000000"
-        android:textSize="24sp"
         android:background="@drawable/button_dark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/result_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/imgview_guideline"
+        app:layout_constraintBottom_toTopOf="@id/tv_guideline"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="30dp"
-        android:clickable="false" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
 
-    <ImageView
-        android:id="@+id/product_img_imageview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintLeft_toLeftOf="@id/product_img_button"
-        app:layout_constraintRight_toRightOf="@id/product_img_button"
-        app:layout_constraintTop_toTopOf="@id/product_img_button"
-        app:layout_constraintBottom_toBottomOf="@+id/product_img_button"
-        android:layout_margin="15dp"
-        android:elevation="31dp"
-        android:contentDescription="@string/result_imageview_description"/>
-    -->
+    <TextView
+        android:id="@+id/product_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/product_name_layout"
+        app:layout_constraintRight_toRightOf="@+id/product_name_layout"
+        app:layout_constraintTop_toTopOf="@+id/product_name_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/product_name_layout"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <Button
-        android:id="@+id/product_name_button"
+        android:id="@+id/result_activity_cls_btn"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@drawable/button_dark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="닫기"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:background="@drawable/button_dark"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/result_guideline"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:elevation="30dp"
-        android:stateListAnimator="@null" />
+        android:padding="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
