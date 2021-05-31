@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HelpFragmentErr"
-    android:background="#C5E1A5" >
+    android:background="#141420" >
 
     <TextView
         android:layout_width="match_parent"
