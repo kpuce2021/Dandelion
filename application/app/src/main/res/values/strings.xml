@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">ItemFinder</string>
+    <string name="app_name">Eyetem</string>
     <string name="result_imageview_description">촬영한 사진입니다.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
