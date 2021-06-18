@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     private var instance: Retrofit? = null
     private var okHttpClient: OkHttpClient? = null
-
     private val gson = GsonBuilder().setLenient().create()
-    // 서버 주소
-    private const val BASE_URL = "http://34.127.49.189:5000/"
+
+    // Server Address
+    private const val BASE_URL = "http://59.14.252.2:5000/"
 
     // SingleTon
     fun getInstance(): Retrofit {
@@ -51,8 +51,7 @@ object RetrofitClient {
 
             override fun onResponse(call: Call<List<ProductVO2>>, response: Response<List<ProductVO2>>) {
                 if (!response.body().isNullOrEmpty()) {
-                    Log.i("getProductInfo", response.body()?.get(0)?.getName().toString())
-                    Log.i("getProductInfo", response.body()?.get(0)?.getConfidence().toString())
+                    Log.i("getProductInfo", "${response.body()?.get(0)?.getName().toString()}, ${response.body()?.get(0)?.getConfidence().toString()}")
                     val intent = Intent(context, ResultActivity::class.java)
                     intent.putExtra("product_name", response.body()?.get(0)?.getName().toString())
                     intent.putExtra("product_confidence", response.body()?.get(0)?.getConfidence().toString())
