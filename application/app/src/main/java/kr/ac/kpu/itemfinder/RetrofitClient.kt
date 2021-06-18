@@ -3,8 +3,12 @@ package kr.ac.kpu.itemfinder
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.startActivity
 import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
@@ -44,9 +48,18 @@ object RetrofitClient {
 
     fun getProductInfo(context: Context, service: RetrofitService, body: MultipartBody.Part) {
         service.productPredict(body).enqueue(object : Callback<List<ProductVO2>> {
+            val vibrator : Vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            val pattern = longArrayOf(0, 100, 50, 100)
+
             override fun onFailure(call: Call<List<ProductVO2>>, t: Throwable) {
                 Toast.makeText(context, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT).show()
                 Log.e("getProduct", t.toString())
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
+                } else {
+                    vibrator.vibrate(pattern, -1)
+                }
             }
 
             override fun onResponse(call: Call<List<ProductVO2>>, response: Response<List<ProductVO2>>) {
@@ -60,6 +73,12 @@ object RetrofitClient {
                 } else {
                     Log.i("getProductInfo", "null")
                     Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
+                    
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
+                    } else {
+                        vibrator.vibrate(pattern, -1)
+                    }
                 }
             }
         })
