@@ -23,7 +23,7 @@ object RetrofitClient {
 
     private val gson = GsonBuilder().setLenient().create()
     // 서버 주소
-    private const val BASE_URL = "http://34.127.49.189:5000/"
+    private const val BASE_URL = "http://52.79.101.219:5000/"
 
     // SingleTon
     fun getInstance(): Retrofit {
