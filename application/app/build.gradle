@@ -55,7 +55,7 @@ dependencies {
 
     // AndroidX Viewpager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation 'com.tbuonomo:dotsindicator:4.2'
 
     // Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
