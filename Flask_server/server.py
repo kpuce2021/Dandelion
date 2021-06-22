@@ -1,5 +1,7 @@
+
 from logging import debug
 import flask
+import json
 import io
 import torch
 from flask import Flask, request, render_template
@@ -14,6 +16,18 @@ app.config['JSON_AS_ASCII'] = False  # jsonify에서 한글사용
 api = Api(app)
 
 
+def translateName(enProductList, transProductList, productName):
+    if productName in enProductList:
+        return transProductList[enProductList.index(productName)]
+    else:
+        return "없는 내용 입니다"
+
+
+productEnName = ["Pepero_Amond", "Pepero_Crunch", "Pepero_Original"]
+
+productKorName = ["빼빼로 아몬드", "빼빼로 크런키", "빼빼로 오리지날"]
+
+
 @app.route('/API', methods=['POST', 'GET'])
 def pred():
     if not request.method == "POST":
@@ -26,8 +40,18 @@ def pred():
         img = Image.open(io.BytesIO(image_bytes))
 
         results = model(img)  # reduce size=320 for faster inference
-        print(results.pandas().xyxy[0].to_json(orient="records"))
-        return results.pandas().xyxy[0].to_json(orient="records")
+        js_result = json.loads(
+            results.pandas().xyxy[0].to_json(orient="records"))
+
+        # print(results.pandas().xyxy[0].to_json(orient="records"))
+        # print(js_result[0]['name'])
+        # print(translateName(productEnName, productKorName, js_result[0]['name']))
+        for i in range(len(js_result)):
+            js_result[i]['name'] = translateName(
+                productEnName, productKorName, js_result[i]['name'])
+        # print(js_result)
+        # return results.pandas().xyxy[0].to_json(orient="records")
+        return str(js_result)
 
 
 if __name__ == '__main__':
