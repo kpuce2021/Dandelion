@@ -35,7 +35,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Math.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -45,6 +44,7 @@ class CameraFragment : Fragment() {
     private lateinit var retrofit : Retrofit
     private lateinit var retrofitService : RetrofitService
 
+    // Camera 관련 변수
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: PreviewView
     private lateinit var outputDirectory: File
@@ -65,6 +65,7 @@ class CameraFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // Check permissions
         if(!PermissionFragment.hasPermissions(requireContext())) {
             Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
                     ActionOnlyNavDirections(R.id.action_permissions_to_camera)
@@ -196,14 +197,14 @@ class CameraFragment : Fragment() {
                 // Create output options object which contains file + metadata
                 val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-
+                // Take a picture
                 imageCapture.takePicture(outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         val savedUri = outputFileResults.savedUri ?: Uri.fromFile(photoFile)
                         Log.d("CameraXBasic", "Photo capture succeeded: $savedUri")
 
+                        // Send data to server
                         val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), resize(requireContext(), savedUri, 1280))
-                        //val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), photoFile)
                         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image", "resize.jpg", requestBody)
                         getProductInfo(requireContext(), retrofitService, body)
                     }
@@ -222,6 +223,7 @@ class CameraFragment : Fragment() {
         retrofitService = retrofit.create(RetrofitService::class.java)
     }
 
+    // Resize the image to improve the speed of communication with server
     private fun resize(context: Context, uri: Uri, resize: Int): File {
         var resizeBitmap: Bitmap? = null
         val options = BitmapFactory.Options()
@@ -237,6 +239,7 @@ class CameraFragment : Fragment() {
                 samplesize *= 2
             }
             options.inSampleSize = samplesize
+            // Rotate the image
             val bitmap = BitmapFactory.decodeStream(context.contentResolver.openInputStream(uri), null, options)
             try {
                 val rotation = ExifInterface(uri.toFile()).rotationDegrees
@@ -270,10 +273,8 @@ class CameraFragment : Fragment() {
 
     private val volumeDownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("func", "onReceive")
             when(intent?.getIntExtra("key_event_extra", KeyEvent.KEYCODE_UNKNOWN)) {
                 KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                    Log.d("button", "볼륨 아래 버튼 클릭")
                     val shutter = container.findViewById<Button>(R.id.camera_capture_button)
                     shutter.performClick()
                 }

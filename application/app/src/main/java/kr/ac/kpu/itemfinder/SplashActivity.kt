@@ -2,7 +2,6 @@ package kr.ac.kpu.itemfinder
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Eyetem</string>
     <string name="result_imageview_description">촬영한 사진입니다.</string>
+    <string name="help_start_text">도우미 화면입니다. 메인 화면의 상단 25% 영역은 도우미 화면으로 들어올 수 있습니다.\n</string>
+    <string name="help_mid01_text">나머지 75% 영역을 터치하거나 볼륨 아래 버튼을 누르면 사진을 촬영합니다.</string>
+    <string name="help_mid02_text">제품을 촬영할 때는 한 손에 제품을 들고, 핸드폰과 한 뼘 이상의 거리를 두고 촬영을 해주시기 바랍니다.</string>
+    <string name="help_mid03_text">결과가 있을 때는 진동이 1회 울리고 결과 화면으로 넘어갑니다. 결과가 없을 때는 진동이 짧게 2회 울리고 메인 화면이 유지됩니다. 다시 제품을 촬영해주세요.</string>
+    <string name="help_end_text">마지막 도우미 화면입니다. 결과 화면에는 촬영한 사진과 제품의 이름이 보여집니다. 화면 상의 \'닫기\' 버튼 또는 \'뒤로 가기\' 버튼을 누르시면 메인 화면으로 돌아옵니다. 이제 제품을 다시 찍어주세요.</string>
 </resources>
