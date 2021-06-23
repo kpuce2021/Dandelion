@@ -37,7 +37,7 @@
         android:id="@+id/help_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="다음"
+        android:text="@string/next_button_text"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"

@@ -42,16 +42,15 @@ class TutorialActivity : FragmentActivity() {
 
         //override fun createFragment(position: Int): Fragment = fragment_screen_slide_page()
         override fun createFragment(position: Int): Fragment {
-            when(position) {
-                0 -> return TutorialFragmentStart()
-                1 -> return TutorialFragmentMid01()
-                2 -> return TutorialFragmentMid02()
-                3 -> return TutorialFragmentMid03()
-                4 -> return TutorialFragmentMid04()
-                5 -> return TutorialFragmentMid05()
-                6 -> return TutorialFragmentEnd()
+            return when(position) {
+                0 -> TutorialFragmentStart()
+                1 -> TutorialFragmentMid01()
+                2 -> TutorialFragmentMid02()
+                3 -> TutorialFragmentMid03()
+                4 -> TutorialFragmentMid04()
+                5 -> TutorialFragmentMid05()
+                else -> TutorialFragmentEnd()
             }
-            return HelpFragmentErr()
         }
     }
 }

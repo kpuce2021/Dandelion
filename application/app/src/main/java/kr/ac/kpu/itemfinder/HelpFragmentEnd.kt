@@ -18,9 +18,6 @@ class HelpFragmentEnd : Fragment() {
             viewpager.currentItem = viewpager.currentItem - 1
         }
         view.help_end_next_button.setOnClickListener {
-            val sPreferencesEditor = context?.getSharedPreferences("help_flag", AppCompatActivity.MODE_PRIVATE)?.edit()
-            sPreferencesEditor?.putInt("help", 1)
-            sPreferencesEditor?.apply()
             requireActivity().finish()
         }
         return view

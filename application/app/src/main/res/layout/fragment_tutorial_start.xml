@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/help_start_text"
+            android:text="@string/tutorial_start_text"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:lineSpacingExtra="15dp"
@@ -37,7 +37,7 @@
         android:id="@+id/tutorial_start_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="다음"
+        android:text="@string/next_button_text"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold"
