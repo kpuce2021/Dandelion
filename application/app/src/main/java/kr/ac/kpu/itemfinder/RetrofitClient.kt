@@ -26,7 +26,7 @@ object RetrofitClient {
     private val gson = GsonBuilder().setLenient().create()
 
     // Server Address
-    private const val BASE_URL = "http://59.14.252.2:5000/"
+    private const val BASE_URL = "http://52.79.101.219:5000/"
 
     // SingleTon
     fun getInstance(): Retrofit {
