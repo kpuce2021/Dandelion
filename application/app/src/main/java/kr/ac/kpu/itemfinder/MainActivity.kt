@@ -16,9 +16,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         container = findViewById(R.id.fragment_container)
 
-        val sPreferences: SharedPreferences = getSharedPreferences("help_flag", MODE_PRIVATE);
-        if(sPreferences.getInt("help", 0) == 0){
-            val intent = Intent(this@MainActivity, HelpActivity::class.java)
+        val sPreferences: SharedPreferences = getSharedPreferences("tutorial_flag", MODE_PRIVATE);
+        if(sPreferences.getInt("tutorial", 0) == 0){
+            val intent = Intent(this@MainActivity, TutorialActivity::class.java)
             startActivity(intent)
         }
     }
