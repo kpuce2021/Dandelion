@@ -7,9 +7,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 
-private const val NUM_PAGES_HELP = 5
+private const val NUM_PAGES_TUTORIAL = 7
 
-class HelpActivity : FragmentActivity() {
+class TutorialActivity : FragmentActivity() {
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -19,46 +19,37 @@ class HelpActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_help)
+        setContentView(R.layout.activity_tutorial)
 
         // Instantiate a ViewPager2 and a PagerAdapter.
-        viewPager = findViewById<ViewPager2>(R.id.pager_help)
+        viewPager = findViewById<ViewPager2>(R.id.pager_tutorial)
 
         // The pager adapter, which provides the pages to the view pager widget.
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
 
         // DotsIndicator
-        val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator_help)
+        val dotsIndicator = findViewById<DotsIndicator>(R.id.dots_indicator_tutorial)
         dotsIndicator.setViewPager2(viewPager)
     }
 
-    override fun onBackPressed() {
-        if (viewPager.currentItem == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed()
-        } else {
-            // Otherwise, select the previous step.
-            viewPager.currentItem = viewPager.currentItem - 1
-        }
-    }
-
     /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * A simple pager adapter that represents 7 ScreenSlidePageFragment objects, in
      * sequence.
      */
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
-        override fun getItemCount(): Int = NUM_PAGES_HELP
+        override fun getItemCount(): Int = NUM_PAGES_TUTORIAL
 
         //override fun createFragment(position: Int): Fragment = fragment_screen_slide_page()
         override fun createFragment(position: Int): Fragment {
             when(position) {
-                0 -> return HelpFragmentStart()
-                1 -> return HelpFragmentMid01()
-                2 -> return HelpFragmentMid02()
-                3 -> return HelpFragmentMid03()
-                4 -> return HelpFragmentEnd()
+                0 -> return TutorialFragmentStart()
+                1 -> return TutorialFragmentMid01()
+                2 -> return TutorialFragmentMid02()
+                3 -> return TutorialFragmentMid03()
+                4 -> return TutorialFragmentMid04()
+                5 -> return TutorialFragmentMid05()
+                6 -> return TutorialFragmentEnd()
             }
             return HelpFragmentErr()
         }

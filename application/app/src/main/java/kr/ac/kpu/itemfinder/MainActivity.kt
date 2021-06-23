@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         val sPreferences: SharedPreferences = getSharedPreferences("help_flag", MODE_PRIVATE);
         if(sPreferences.getInt("help", 0) == 0){
-            val intent = Intent(this@MainActivity, HelpActivity::class.java)
+            val intent = Intent(this@MainActivity, TutorialActivity::class.java)
             startActivity(intent)
         }
     }
