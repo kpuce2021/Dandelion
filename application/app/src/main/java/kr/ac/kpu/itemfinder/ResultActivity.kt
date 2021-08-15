@@ -26,7 +26,7 @@ class ResultActivity : AppCompatActivity() {
 
         product_name_tv.text = "${intent.getStringExtra("product_name")}\n${intent.getStringExtra("product_confidence")}"
 
-        result_activity_cls_btn.setOnClickListener {
+        result_layout.setOnClickListener {
             finish()
         }
 
