@@ -12,6 +12,7 @@ class HelpFragmentMid02 : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_help_mid02, container, false)
+        /*
         val viewpager = requireActivity().findViewById<ViewPager2>(R.id.pager_help)
         view.help_mid02_prev_button.setOnClickListener {
             viewpager.currentItem = viewpager.currentItem - 1
@@ -19,6 +20,7 @@ class HelpFragmentMid02 : Fragment() {
         view.help_mid02_next_button.setOnClickListener {
             viewpager.currentItem = viewpager.currentItem + 1
         }
+         */
         return view
     }
 }

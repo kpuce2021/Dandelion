@@ -13,6 +13,7 @@ class TutorialFragmentEnd : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_tutorial_end, container, false)
+        /*
         val viewpager = requireActivity().findViewById<ViewPager2>(R.id.pager_tutorial)
         view.tutorial_end_prev_button.setOnClickListener {
             viewpager.currentItem = viewpager.currentItem - 1
@@ -22,6 +23,12 @@ class TutorialFragmentEnd : Fragment() {
             sPreferencesEditor?.putInt("tutorial", 1)
             sPreferencesEditor?.apply()
             requireActivity().finish()
+        }
+         */
+        view.tutorial_end_text_layout.setOnClickListener {
+            val sPreferencesEditor = context?.getSharedPreferences("tutorial_flag", AppCompatActivity.MODE_PRIVATE)?.edit()
+            sPreferencesEditor?.putInt("tutorial", 1)
+            sPreferencesEditor?.apply()
             requireActivity().finish()
         }
         return view

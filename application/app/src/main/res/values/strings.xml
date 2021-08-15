@@ -4,16 +4,16 @@
     <string name="next_button_text">다음</string>
     <string name="finish_button_text">확인</string>
     <string name="result_imageview_description">촬영한 사진입니다.</string>
-    <string name="help_start_text">도우미 화면입니다. 메인 화면의 상단 25% 영역을 터치하시면 도우미 화면으로 들어올 수 있습니다.\n</string>
+    <string name="help_start_text">도우미 화면입니다. 좌우 스크롤로 도우미 화면의 페이지 이동이 가능합니다. 메인 화면의 상단 25% 영역을 터치하시면 도우미 화면으로 들어올 수 있습니다.\n</string>
     <string name="help_mid01_text">메인 화면의 나머지 75% 영역을 터치하거나 볼륨 아래 버튼을 누르면 사진을 촬영합니다.</string>
     <string name="help_mid02_text">제품을 촬영할 때는 한 손에 제품을 들고, 핸드폰과 한 뼘 이상의 거리를 두고 촬영 해주시기 바랍니다.</string>
     <string name="help_mid03_text">결과가 있을 경우에는 진동이 1회 울리고 결과 화면으로 넘어갑니다. 결과가 없을 경우에는 진동이 짧게 2회 울리고 메인 화면이 유지됩니다. 제품을 다시 촬영해주세요.</string>
-    <string name="help_end_text">마지막 도우미 화면입니다. 결과 화면에는 촬영한 사진과 제품의 이름이 보여집니다. 화면 상의 \'닫기\' 버튼 또는 기기의 \'뒤로 가기\' 버튼을 누르시면 메인 화면으로 돌아옵니다. 이제 제품을 다시 찍어주세요.</string>
-    <string name="tutorial_start_text">안녕하세요! Eyetem입니다. 해당 화면은 처음 사용하는 사용자들을 위한 화면입니다. 아래의 이전 버튼과 다음 버튼을 눌러 페이지를 이동할 수 있습니다.</string>
+    <string name="help_end_text">마지막 도우미 화면입니다. 결과 화면에는 촬영한 사진과 제품의 이름이 보여집니다. 화면의 어떤 영역이든 터치하시면메인 화면으로 돌아옵니다. 이제 제품을 다시 찍어주세요. 도우미가 끝났습니다. 화면의 어떤 영역이든 터치하시면 도우미가 종료됩니다.</string>
+    <string name="tutorial_start_text">안녕하세요! Eyetem입니다. 해당 화면은 처음 사용하는 사용자들을 위한 화면입니다. 좌우 스크롤로 도우미 화면의 페이지 이동이 가능합니다.</string>
     <string name="tutorial_mid01_text">Eyetem은 편의점의 제품을 보다 쉽게 판별할 수 있도록 도움을 주는 어플입니다. 메인 화면의 상단 25% 영역을 터치하시면 어플의 사용 방법을 다시 확인하실 수 있습니다.</string>
     <string name="tutorial_mid02_text">메인 화면의 나머지 75% 영역을 터치하거나 볼륨 아래 버튼을 누르면 사진을 촬영합니다.</string>
     <string name="tutorial_mid03_text">제품을 촬영할 때는 한 손에 제품을 들고, 핸드폰과 한 뼘 이상의 거리를 두고 촬영 해주시기 바랍니다.</string>
     <string name="tutorial_mid04_text">결과가 있을 경우에는 진동이 1회 울리고 결과 화면으로 넘어갑니다. 결과가 없을 경우에는 진동이 짧게 2회 울리고 메인 화면이 유지됩니다. 제품을 다시 촬영해주세요</string>
-    <string name="tutorial_mid05_text">결과 화면에는 촬영한 사진과 제품의 이름이 보여집니다. 화면 상의 \'닫기\' 버튼 또는 기기의 \'뒤로 가기\' 버튼을 누르시면 메인 화면으로 돌아옵니다. 이제 제품을 다시 찍어주세요.</string>
-    <string name="tutorial_end_text">마지막 화면입니다. \'확인\' 버튼을 터치하시면 카메라 권한을 요청하는 창에서 \'앱 사용 중에만 허용\' 버튼을 선택해주세요. 감사합니다.</string>
+    <string name="tutorial_mid05_text">결과 화면에는 촬영한 사진과 제품의 이름이 보여집니다. 화면의 어떤 영역이든 터치하시면 메인 화면으로 돌아옵니다. 이제 제품을 다시 찍어주세요.</string>
+    <string name="tutorial_end_text">마지막 화면입니다. 화면의 어떤 영역이든 터치하시면 카메라 권한을 요청하는 창이 나타납니다. 해당 창에서 \'앱 사용 중에만 허용\' 버튼을 선택해주세요. 그 후 카메라가 실행됩니다. 감사합니다.</string>
 </resources>
