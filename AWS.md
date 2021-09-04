@@ -48,12 +48,10 @@ PuTTY를 이용하여 EC2에 접근하기 위해서는 pem이 아닌 private key
 	sudo apt-get install virtualenv
 	```
 
-- 가상환경 생성 및 실행
+- 가상환경 실행
 	```
-	virtualenv --python=python3 kpu
-	source ./kpu/bin/activate
+	pyenv activate dandelion
 	```
-	> kpu라는 이름의 가상환경을 생성하는 코드
 
 - 가상환경 내부 설정
 	```
@@ -65,13 +63,15 @@ PuTTY를 이용하여 EC2에 접근하기 위해서는 pem이 아닌 private key
 ## 이후 접속할 경우
 - 가상환경 실행
 	```
-	source ./kpu/bin/activate
+	pyenv activate dandelion
 	```
 - 서버 배포
 	```
 	python server.py
 	```
 	> 여기서 server.py는 배포할 파일 명을 입력하면 된다.
+- 서버 종료
+	> 인스턴스 중지
 
 ## 가상환경 내에서 파일을 수정하길 원하는 경우
 - 코드

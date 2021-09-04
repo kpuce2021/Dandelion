@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HelpActivity">
+    tools:context=".TutorialActivity">
 
     <!-- activity_screen_slide.xml -->
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager_help"
+        android:id="@+id/pager_tutorial"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-        android:id="@+id/dots_indicator_help"
+        android:id="@+id/dots_indicator_tutorial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"

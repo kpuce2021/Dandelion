@@ -12,10 +12,12 @@ class HelpFragmentStart : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_help_start, container, false)
-        val viewpager = requireActivity().findViewById<ViewPager2>(R.id.pager)
+        /*
+        val viewpager = requireActivity().findViewById<ViewPager2>(R.id.pager_help)
         view.help_start_button.setOnClickListener {
             viewpager.currentItem = viewpager.currentItem + 1
         }
+         */
         return view
     }
 }
