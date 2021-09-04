@@ -10,23 +10,11 @@ from keras.models import load_model
 import numpy as np
 from PIL import Image
 from flask_restful import Resource, Api
-import translateProductName
+import translateProductName     # 제품 name을 한글로 변환해주는 모듈
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False  # jsonify에서 한글사용
 api = Api(app)
-
-
-# def translateName(enProductList, transProductList, productName):
-#     if productName in enProductList:
-#         return transProductList[enProductList.index(productName)]
-#     else:
-#         return "없는 내용 입니다"
-
-
-# productEnName = ["Pepero_Amond", "Pepero_Crunch", "Pepero_Original"]
-
-# productKorName = ["빼빼로 아몬드", "빼빼로 크런키", "빼빼로 오리지날"]
 
 productEnName = translateProductName.productEnName
 productKorName = translateProductName.productKorName
@@ -62,7 +50,7 @@ if __name__ == '__main__':
     # 모델 로드
     model = torch.hub.load(
         "contea95/Yolo_Practice_Repository", "custom")
-    model.conf = 0.60
-    model.iou = 0.2
+    model.conf = 0.2
+    model.iou = 0.45
     # 공유기 사용 시 포트포워딩 필요
     app.run(host='0.0.0.0', port=5000, debug=True)

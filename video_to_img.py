@@ -27,10 +27,10 @@ def createFolder(directory):
 
 
 filecount = 0
-for i in range(1, 37):
+for i in range(1, 250):
     name = str(i)
 
-    videofile = '/Users/han/Downloads/mov/' + name + ".MOV"
+    videofile = '/Users/han/Desktop/yolov5/Val/DemisodaPeach/ValDemisodaPeach' + name + ".mov"
 
     cam = cv2.VideoCapture(videofile)
 
@@ -39,9 +39,9 @@ for i in range(1, 37):
         ret, frame = cam.read()
         if ret:
             #createFolder('/Users/han/Downloads/save/' + name)
-            img = Rotate(frame, 90)
-            cv2.imwrite('/Users/han/Downloads/save/' +
-                        str(filecount) + '.jpg', img)
+            #img = Rotate(frame, 90)
+            cv2.imwrite('/Users/han/Desktop/yolov5/Val/DemisodaPeach/ValDemisodaPeach' +
+                        str(filecount) + '.jpg', frame)
             filecount += 1
             currentFrame += 1
             print(currentFrame)
