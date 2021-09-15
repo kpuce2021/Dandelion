@@ -71,7 +71,7 @@ object RetrofitClient {
                     startActivity(context, intent, null)
                 } else {
                     Log.i("getProductInfo", "null")
-                    Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "제품을 인식할 수 없습니다.", Toast.LENGTH_SHORT).show()
                     
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
