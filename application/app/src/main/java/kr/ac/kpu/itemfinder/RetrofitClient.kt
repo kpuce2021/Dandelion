@@ -51,7 +51,7 @@ object RetrofitClient {
             val pattern = longArrayOf(0, 100, 50, 100)
 
             override fun onFailure(call: Call<List<ProductVO2>>, t: Throwable) {
-                Toast.makeText(context, "getProductInfo_onFailure\n$t", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "서버 연결에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 Log.e("getProduct", t.toString())
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
