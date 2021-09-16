@@ -25,16 +25,17 @@ class ResultActivity : AppCompatActivity() {
 
         val product_confidence = intent.getStringExtra("product_confidence")!!.toDouble() * 100
 
+        /*
         product_name_tv.text = "${intent.getStringExtra("product_name")}\n정확도 "+product_confidence.roundToInt()+"%"
         product_img_imageview.contentDescription = intent.getStringExtra("product_name")+" 정확도 "+product_confidence.roundToInt()+"%"
+        */
 
-        /*
         when {
-            product_confidence <= 20 -> {
+            product_confidence <= 30 -> {
                 product_name_tv.text = "${intent.getStringExtra("product_name")}\n정확도 낮음"
                 product_img_imageview.contentDescription = intent.getStringExtra("product_name")+" 정확도 낮음"
             }
-            product_confidence <= 70 -> {
+            product_confidence <= 75 -> {
                 product_name_tv.text = "${intent.getStringExtra("product_name")}\n정확도 보통"
                 product_img_imageview.contentDescription = intent.getStringExtra("product_name")+" 정확도 보통"
             }
@@ -43,7 +44,7 @@ class ResultActivity : AppCompatActivity() {
                 product_img_imageview.contentDescription = intent.getStringExtra("product_name")+" 정확도 높음"
             }
         }
-        */
+
 
         result_layout.setOnClickListener {
             finish()
