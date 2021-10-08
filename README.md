@@ -17,7 +17,6 @@ Eyetem은 딥러닝 기반으로 편의점 제품을 학습하여 시각장애�
 
 ## ⭐️ **팀원 역할 및 소개** ⭐️
 
----
 <table>
   <tr>
     <td align="center"><a href="https://github.com/contea95"><img src="https://avatars1.githubusercontent.com/u/64491659?s=400&u=3c39d4f9b95c74c1474c8cc90706155d600f00b8&v=4" width="100px;" alt=""/><br /><sub><b>한상혁</b></sub></a><br />서버/머신러닝</td>
@@ -28,11 +27,11 @@ Eyetem은 딥러닝 기반으로 편의점 제품을 학습하여 시각장애�
 </table>
 
 ## 애플리케이션 
----
+
 <img src="./Document/데모.gif" width="200" height="400"/>
 
 ## 기술 스택
----
+
 * Kotlin
 * OpenCV
 * Python
@@ -43,11 +42,11 @@ Eyetem은 딥러닝 기반으로 편의점 제품을 학습하여 시각장애�
 
 
 ## 개발 방법
----
+
 - **Agile Framework - Scrum 모델** 사용
 
 ## 사용 협업 툴
----
+
 1. [Github](https://github.com/kpuce2021/Dandelion)
 2. [Trello](https://trello.com/b/BMWAK0oT)
 3. [SpreadSheet](https://docs.google.com/spreadsheets/d/1auyVjzKxb7iPgwjhEjFhaKm2PBqUoI8BcHxVw9EPz6k/edit?usp=sharing)
@@ -55,21 +54,21 @@ Eyetem은 딥러닝 기반으로 편의점 제품을 학습하여 시각장애�
 
 
 ## 시스템 설계
----
+
 ![system_design](./Document/210123시스템설계_목표버전.png)
 
 
 ## 서비스 WorkFlow
----
+
 ![service_workflow](./Document/서비스_워크플로우.png)
 
 
 ## 시스템 시나리오
----
+
 ![system_scenario](./Document/시스템_시나리오.png)
 
 ## 기능 개발 여부 / 담당자
----
+
 |   기능   |                    상세 기능                    | 담당자 | 구현 여부 |
 | :------: | :---------------------------------------------: | :----: | :-------: |
 | 데이터셋 |          딥러닝을 위한 제품 사진 준비           | 정지운 |     O     |
@@ -82,7 +81,7 @@ Eyetem은 딥러닝 기반으로 편의점 제품을 학습하여 시각장애�
 
 
 ## 사용 환경 및 사용 라이브러리
----
+
 | 라이브러리 |     목적      | 사용환경 |
 | :--------: | :-----------: | :------: |
 |  CameraX   |    카메라     | Android  |
